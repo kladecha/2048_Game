@@ -25,53 +25,37 @@ public class GameBoard {
     private BufferedImage finalBoard;
     private int x;
     private int y;
-//    private int score = 0;
-//    private int highScore = 0;
-//    private Font scoreFont;
     
     private static int SPACING = 10;
     public static int BOARD_WIDTH = (COLS+1)*SPACING+COLS*Tile.WIDTH;
     public static int BOARD_HEIGHT = (ROWS+1)*SPACING+ROWS*Tile.HEIGHT;
     
     private long elapsedMS;
-//    private long fastestMS;
     private long startTime;
-//    private String formattedTime = "00:00:000";
     private boolean hasStarted;
     private int saveCount;
 
     //saving
-//    private String saveDataPath;
-//    private String fileName = "SavaData";
+    private String saveDataPath;
+    private String fileName = "SavaData";
     
     private ScoreManager scores;
     private Leaderboards lBoard;
     
     public GameBoard(int x, int y){
-//    	try {
-//            saveDataPath = GameBoard.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
-////            saveDataPath = System.getProperty("user.home")+"\\foldername";
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        
-//        scoreFont = Game.main.deriveFont(24f);
         this.x = x;
         this.y = y;
         board = new Tile[ROWS][COLS];
         gameBoard = new BufferedImage(BOARD_WIDTH, BOARD_HEIGHT, BufferedImage.TYPE_INT_RGB);
         finalBoard = new BufferedImage(BOARD_WIDTH, BOARD_HEIGHT, BufferedImage.TYPE_INT_RGB);
         
-//        loadHighScore();
         createBoardImage();
-//        start();
         
         lBoard = Leaderboards.getInstance();
         lBoard.loadScores();
         scores = new ScoreManager(this);
         scores.loadGame();
-//        scores.setBestTime(lBoard.getFastTime());
-        scores.setCurrentScore(lBoard.getHighScore());
+        scores.setCurrentTopScore(lBoard.getHighScore());
         if(scores.newGame()) {
         	start();
         	scores.saveGame();
@@ -100,9 +84,9 @@ public class GameBoard {
     
     private void createBoardImage(){
         Graphics2D g = (Graphics2D) gameBoard.getGraphics();
-        g.setColor(Color.darkGray);
+        g.setColor(new Color(0x776e65));
         g.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
-        g.setColor(Color.lightGray);
+        g.setColor(new Color(0xbfb09c));
         
         for(int row = 0; row < ROWS; row++){
             for(int col = 0; col < COLS; col++){
@@ -117,11 +101,6 @@ public class GameBoard {
     	for(int i = 0; i < startingTiles; i++) {
     		spawnRandom();
     	}
-    	
-//    	spawn(0,0,2);
-//    	spawn(0,1,2);
-//    	spawn(1,2,2);
-//    	spawn(0,3,2);
     }
     
     private void spawn(int row, int col, int value) {
@@ -169,7 +148,6 @@ public class GameBoard {
         g.drawImage(finalBoard, x, y, null);
         g2d.dispose();
         
-
     }
     
     public void update(){
@@ -190,7 +168,7 @@ public class GameBoard {
         		if(current == null) continue;
         		current.update();
         		resetPosition(current, row, col);
-        		if(current.getValue() == 2048) {
+        		if(current.getValue() == 64) {
         			setWon(true);
         		}
         	}
@@ -250,15 +228,12 @@ public class GameBoard {
     			canMove = true;
     			board[newRow-verticalDirection][newCol-horizontalDirection] = null;
     			board[newRow][newCol].setSlideTo(new Point(newRow, newCol));
-//    			board[newRow][newCol].setCombineAnimation(true);
-//    			score += board[newRow][newCol].getValue();
     			scores.setCurrentScore(scores.getCurrentScore()+board[newRow][newCol].getValue());
     		}
     		else {
     			move = false;
     		}
     	}
-    	
     	return canMove;
     }
     
@@ -370,7 +345,7 @@ public class GameBoard {
 		for(int row = 0; row < ROWS; row++) {
 			for(int col = 0; col < COLS; col++) {
 				if(board[row][col] == null)continue;
-				if(board[row][col].getValue() >= 2048)return true;
+				if(board[row][col].getValue() >= 64)return true;
 			}
 		}
 		return false;
@@ -451,6 +426,8 @@ public class GameBoard {
     public void setWon(boolean won) {
     	if(!this.won && won) {
 //    		lBoard.addTime(scores.getTime());
+    		lBoard.addTile(getHighestTileValue());
+    		lBoard.addScore(scores.getCurrentScore());
     		lBoard.saveScores();
     	}
     	this.won = won;

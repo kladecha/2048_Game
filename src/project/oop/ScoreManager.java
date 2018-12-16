@@ -51,10 +51,6 @@ public class ScoreManager {
 			writer.newLine();
 			writer.write("" + 0);
 			writer.newLine();
-			writer.write("" + 0);
-			writer.newLine();
-			writer.write("" + 0);
-			writer.newLine();
 			
 			for(int row = 0; row < GameBoard.ROWS; row++) {
 				for(int col = 0;col < GameBoard.COLS; col++) {
@@ -129,7 +125,7 @@ public class ScoreManager {
 			
 			String[] board = reader.readLine().split("-");
 			for(int i=0; i < board.length; i++) {
-				this .board[i] = Integer.parseInt(board[i]);
+				this.board[i] = Integer.parseInt(board[i]);
 			}
 			
 			reader.close();

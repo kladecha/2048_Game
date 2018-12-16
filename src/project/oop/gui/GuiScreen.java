@@ -1,6 +1,5 @@
 package project.oop.gui;
 
-
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;

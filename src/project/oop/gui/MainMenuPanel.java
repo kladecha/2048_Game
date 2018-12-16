@@ -8,6 +8,8 @@ import java.awt.event.ActionListener;
 
 import project.oop.DrawUtil;
 import project.oop.Game;
+import project.oop.GameBoard;
+import project.oop.ScoreManager;
 
 public class MainMenuPanel extends GuiPanel{
 	
@@ -20,13 +22,14 @@ public class MainMenuPanel extends GuiPanel{
 	public MainMenuPanel() {
 		super();
 		
-		GuiButton playButton = new GuiButton(Game.WIDTH / 2 - buttonWidth / 2, 220, buttonWidth, buttonHeight);
-//		GuiButton scoresButton = new GuiButton(Game.WIDTH / 2 - buttonWidth / 2, playButton.getY()+spacing, buttonWidth, buttonHeight);
-//		GuiButton quiteButton = new GuiButton(Game.WIDTH / 2 - buttonWidth / 2, scoresButton.getY()+spacing, buttonWidth, buttonHeight);
-		GuiButton quiteButton = new GuiButton(Game.WIDTH / 2 - buttonWidth / 2, playButton.getY()+spacing, buttonWidth, buttonHeight);
+		GuiButton playButton = new GuiButton(Game.WIDTH / 2 - buttonWidth / 2, 160, buttonWidth, buttonHeight);
+		GuiButton scoresButton = new GuiButton(Game.WIDTH / 2 - buttonWidth / 2, playButton.getY()+spacing, buttonWidth, buttonHeight);
+		GuiButton tutorialButton = new GuiButton(Game.WIDTH / 2 - buttonWidth / 2, scoresButton.getY()+spacing, buttonWidth, buttonHeight);
+		GuiButton quiteButton = new GuiButton(Game.WIDTH / 2 - buttonWidth / 2,  tutorialButton.getY()+spacing, buttonWidth, buttonHeight);
 		
 		playButton.setText("Play");
-//		scoresButton.setText("Scores");
+		scoresButton.setText("Scores");
+		tutorialButton.setText("Tutorial");
 		quiteButton.setText("Quit");
 		
 		playButton.addActionListener(new ActionListener() {
@@ -38,13 +41,21 @@ public class MainMenuPanel extends GuiPanel{
 			
 		});
 		
-//		scoresButton.addActionListener(new ActionListener() {
-//
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				GuiScreen.getInstance().setCurrentPanel("Leaderboards");
-//			}
-//		});	
+		scoresButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				GuiScreen.getInstance().setCurrentPanel("Scores");
+			}
+		});
+		
+		tutorialButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				GuiScreen.getInstance().setCurrentPanel("Tutorial");
+			}
+		});	
 		
 		quiteButton.addActionListener(new ActionListener() {
 
@@ -56,7 +67,8 @@ public class MainMenuPanel extends GuiPanel{
 		});
 		
 		add(playButton);
-//		add(scoresButton);
+		add(scoresButton);
+		add(tutorialButton);
 		add(quiteButton);
 	}
 	
@@ -65,6 +77,6 @@ public class MainMenuPanel extends GuiPanel{
 		super.render(g);
 		g.setFont(titleFont);
 		g.setColor(Color.black);
-		g.drawString(title, Game.WIDTH / 2 - DrawUtil.getMessageWidth(title, titleFont, g) / 2, 150);
+		g.drawString(title, Game.WIDTH / 2 - DrawUtil.getMessageWidth(title, titleFont, g) / 2, 120);
 	}
 }

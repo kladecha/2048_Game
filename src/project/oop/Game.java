@@ -6,20 +6,23 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.*;
 
+import project.oop.gui.GuiPanel;
 import project.oop.gui.GuiScreen;
+import project.oop.gui.LeaderboardsPanel;
 import project.oop.gui.MainMenuPanel;
 import project.oop.gui.PlayPanel;
+import project.oop.gui.TutorialPanel;
 
 public class Game extends JPanel implements KeyListener, MouseListener, MouseMotionListener, Runnable {
 
     private static final long serialVersionUID = 1L;
-    public static final int WIDTH = 1000;
-    public static final int HEIGHT = 530;
-    public static final Font main = new Font("Kanit", Font.PLAIN, 28);
+    public static final int WIDTH = 450;
+    public static final int HEIGHT = 560;
+    public static final Font main = new Font("Arial", Font.PLAIN, 28);
     private Thread game;
     private boolean running;
     private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-    private GameBoard board;
+//    private GameBoard Board;
     private GuiScreen screen;
 
 //    private long startTime;
@@ -34,10 +37,13 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
         addMouseMotionListener(this);
         
         
+        
 //        board = new GameBoard(WIDTH/2-GameBoard.BOARD_WIDTH/2, HEIGHT-GameBoard.BOARD_HEIGHT-10);
         screen = GuiScreen.getInstance();
         screen.add("Menu", new MainMenuPanel());
         screen.add("Play", new PlayPanel());
+        screen.add("Scores", new LeaderboardsPanel());
+        screen.add("Tutorial", new TutorialPanel());
         screen.setCurrentPanel("Menu");
     }
 
